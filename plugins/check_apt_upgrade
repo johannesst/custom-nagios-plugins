@@ -119,7 +119,7 @@ fi
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need TEMP as the `eval set --' would nuke the return value of getopt.
-if ! TEMP=$($GETOPT -q  -n "$SCRIPT_NAME" -o +hlnvt: -l skip-hwe-check -- "$@"); then
+if ! TEMP=$($GETOPT -q -s sh -n "$SCRIPT_NAME" -o +hlnvt: -l skip-hwe-check -- "$@"); then
   p_unknown "Unknown/invalid argument, see $SCRIPT_NAME -h for help"
 fi
 
