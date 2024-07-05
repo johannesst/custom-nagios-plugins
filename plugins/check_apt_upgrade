@@ -128,9 +128,8 @@ eval set -- "$TEMP"
 
 # Parse arguments
 while test "$1" != "--"; do case "$1" in
-      -h) long_usage; shift;;
-      -l) LIST_PACKAGES=$( "$BIN" "--package-names" 2>&1 > /dev/null ); shift;;
       -h) long_usage; ;;
+      -l) LIST_PACKAGES=$( "$BIN" "--package-names" 2>&1 > /dev/null ); shift;;
       -n) perf_data_enabled=0; shift;;
       -v) verbosity="verbose"; shift;;
       -t) echo "$2" | grep -qE '^[0-9]+(\.[0-9]+)?$' && check_timeout="$2"; shift 2;;
