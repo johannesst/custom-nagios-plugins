@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Nagios plugin to check for regular and security updates availability
 # Copyright (c) 2012-2017 Simon Deziel <simon@sdeziel.info>
