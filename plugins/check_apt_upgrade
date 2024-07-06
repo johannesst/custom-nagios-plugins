@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Nagios plugin to check for regular and security updates availability
 # Copyright (c) 2012-2017 Simon Deziel <simon@sdeziel.info>
@@ -101,8 +101,7 @@ EOF
 hwe_support_status () {
   [ -e "$PATH_TO_HWE_SUPPORT_STATUS" ] || return
 
-  HWE_SUPPORT_STATUS_MSG="; $($PATH_TO_HWE_SUPPORT_STATUS --$verbosity 2>&1)"
-  if [ "$?" != 0 ]; then
+  if ! HWE_SUPPORT_STATUS_MSG="; $($PATH_TO_HWE_SUPPORT_STATUS --$verbosity 2>&1)";then
     security_updates="$((security_updates + 1))"
   fi
 
@@ -120,8 +119,7 @@ fi
 # Note that we use `"$@"' to let each command-line parameter expand to a
 # separate word. The quotes around `$@' are essential!
 # We need TEMP as the `eval set --' would nuke the return value of getopt.
-TEMP=$($GETOPT -q -s sh -n "$SCRIPT_NAME" -o +hlnvt: -l skip-hwe-check -- "$@")
-if [ $? != 0 ]; then
+if ! TEMP=$($GETOPT -q -s sh -n "$SCRIPT_NAME" -o +hlnvt: -l skip-hwe-check -- "$@"); then
   p_unknown "Unknown/invalid argument, see $SCRIPT_NAME -h for help"
 fi
 
@@ -130,7 +128,7 @@ eval set -- "$TEMP"
 
 # Parse arguments
 while test "$1" != "--"; do case "$1" in
-      -h) long_usage; shift;;
+      -h) long_usage; ;;
       -l) LIST_PACKAGES=$( "$BIN" "--package-names" 2>&1 > /dev/null ); shift;;
       -n) perf_data_enabled=0; shift;;
       -v) verbosity="verbose"; shift;;
@@ -148,7 +146,7 @@ fi
 
 # Check if all worked
 [ -n "$TIMEOUT_BIN" ] || check_timeout=""
-updates="$($TIMEOUT_BIN $check_timeout $BIN 2>&1)"
+updates="$("$TIMEOUT_BIN" "$check_timeout" "$BIN" 2>&1)"
 RC="$?"
 if [ "$RC" -eq 124 ]; then
   p_critical "Plugin timed out after $check_timeout seconds"
